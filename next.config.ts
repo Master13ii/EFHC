@@ -4,10 +4,10 @@ import withBundleAnalyzer from '@next/bundle-analyzer';
 import { withSentryConfig } from '@sentry/nextjs';
 import createNextIntlPlugin from 'next-intl/plugin';
 
-// Плагин для мультиязычности
+// Плагин мультиязычности
 const withNextIntl = createNextIntlPlugin('./src/libs/i18n.ts');
 
-// Анализ размера бандла (включается при ANALYZE=true)
+// Анализ бандла (включается при ANALYZE=true)
 const bundleAnalyzer = withBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 });
@@ -34,7 +34,7 @@ const sentryOptions = {
   telemetry: false,
 };
 
-// Собираем плагины: i18n → анализатор → Sentry
+// i18n → bundle-analyzer → Sentry
 export default withSentryConfig(
   bundleAnalyzer(withNextIntl(nextConfig)),
   sentryOptions
