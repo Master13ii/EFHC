@@ -3,22 +3,19 @@ import withBundleAnalyzer from '@next/bundle-analyzer';
 import { withSentryConfig } from '@sentry/nextjs';
 import createNextIntlPlugin from 'next-intl/plugin';
 
-// Плагин мультиязычности
 const withNextIntl = createNextIntlPlugin('./src/libs/i18n.ts');
 
-// Анализ бандла
 const bundleAnalyzer = withBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 });
 
-/** @type {NextConfig} */
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
   output: 'standalone',
   serverExternalPackages: ['@electric-sql/pglite'],
   eslint: {
-    ignoreDuringBuilds: process.env.CI === 'true', // Линтинг только локально
+    ignoreDuringBuilds: process.env.CI === 'true',
   },
   i18n: {
     locales: ['en', 'fr'],
@@ -26,7 +23,6 @@ const nextConfig: NextConfig = {
   },
 };
 
-// Настройки Sentry
 const sentryOptions = {
   org: 'EFHC',
   project: 'EFHC',
@@ -40,7 +36,6 @@ const sentryOptions = {
   telemetry: false,
 };
 
-// i18n → bundle-analyzer → Sentry
 export default withSentryConfig(
   bundleAnalyzer(withNextIntl(nextConfig)),
   sentryOptions
