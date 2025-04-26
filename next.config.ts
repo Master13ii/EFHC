@@ -4,10 +4,10 @@ import withBundleAnalyzer from '@next/bundle-analyzer';
 import { withSentryConfig } from '@sentry/nextjs';
 import createNextIntlPlugin from 'next-intl/plugin';
 
-// Инициализация next-intl
+// Плагин для мультиязычности
 const withNextIntl = createNextIntlPlugin('./src/libs/i18n.ts');
 
-// Настройка bundle analyzer
+// Анализ размера бандла (включается при ANALYZE=true)
 const bundleAnalyzer = withBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 });
@@ -19,7 +19,6 @@ const nextConfig: NextConfig = {
   output: 'standalone',
   serverExternalPackages: ['@electric-sql/pglite'],
   eslint: { ignoreDuringBuilds: true },
-  // Добавьте при необходимости другие настройки: images, redirects и т.п.
 };
 
 const sentryOptions = {
@@ -35,7 +34,7 @@ const sentryOptions = {
   telemetry: false,
 };
 
-// Собираем плагины: intl → analyzer → sentry
+// Собираем плагины: i18n → анализатор → Sentry
 export default withSentryConfig(
   bundleAnalyzer(withNextIntl(nextConfig)),
   sentryOptions
