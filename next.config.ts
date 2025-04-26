@@ -6,7 +6,7 @@ import createNextIntlPlugin from 'next-intl/plugin';
 // Плагин мультиязычности
 const withNextIntl = createNextIntlPlugin('./src/libs/i18n.ts');
 
-// Анализ бандла (включается при ANALYZE=true)
+// Анализ бандла
 const bundleAnalyzer = withBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 });
@@ -18,9 +18,8 @@ const nextConfig: NextConfig = {
   output: 'standalone',
   serverExternalPackages: ['@electric-sql/pglite'],
   eslint: {
-    ignoreDuringBuilds: process.env.CI === 'true', // Игнорировать ESLint только в CI
+    ignoreDuringBuilds: process.env.CI === 'true', // Линтинг только локально
   },
-  // Настройки i18n (для next-intl)
   i18n: {
     locales: ['en', 'fr'],
     defaultLocale: 'en',
@@ -31,7 +30,7 @@ const nextConfig: NextConfig = {
 const sentryOptions = {
   org: 'EFHC',
   project: 'EFHC',
-  silent: process.env.CI !== 'true', // Логировать только вне CI
+  silent: process.env.CI !== 'true',
   widenClientFileUpload: true,
   reactComponentAnnotation: { enabled: true },
   tunnelRoute: '/monitoring',
@@ -41,7 +40,7 @@ const sentryOptions = {
   telemetry: false,
 };
 
-// Оборачивание: i18n → bundle-analyzer → Sentry
+// i18n → bundle-analyzer → Sentry
 export default withSentryConfig(
   bundleAnalyzer(withNextIntl(nextConfig)),
   sentryOptions
