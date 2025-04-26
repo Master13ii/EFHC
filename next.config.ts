@@ -3,37 +3,16 @@ import type { NextConfig } from 'next';
 import withBundleAnalyzer from '@next/bundle-analyzer';
 import { withSentryConfig } from '@sentry/nextjs';
 import createNextIntlPlugin from 'next-intl/plugin';
-import './src/libs/Env';
 
-// Инициализация плагина next-intl
 const withNextIntl = createNextIntlPlugin('./src/libs/i18n.ts');
+const bundleAnalyzer = withBundleAnalyzer({ enabled: process.env.ANALYZE === 'true' });
 
-// Настройка bundle analyzer
-const bundleAnalyzer = withBundleAnalyzer({
-  enabled: process.env.ANALYZE === 'true',
-});
-
-/** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
-  // Убираем заголовок X-Powered-By
   poweredByHeader: false,
-
-  // Включаем строгий режим React
   reactStrictMode: true,
-
-  // Собираем standalone-вывод
   output: 'standalone',
-
-  // Внешние серверные пакеты (не трогано)
   serverExternalPackages: ['@electric-sql/pglite'],
-
-  // Отключаем ESLint-проверку во время сборки
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-
-  // Убираем встроенную секцию i18n — она будет обрабатываться через next-intl
-  // (если вы ранее прописывали здесь locales, удалите их)
+  eslint: { ignoreDuringBuilds: true },
 };
 
 const sentryOptions = {
@@ -49,12 +28,7 @@ const sentryOptions = {
   telemetry: false,
 };
 
-// Сборка конфигурации плагинами в порядке: next-intl → bundle-analyzer → sentry
-const config = withSentryConfig(
-  bundleAnalyzer(
-    withNextIntl(nextConfig)
-  ),
+export default withSentryConfig(
+  bundleAnalyzer(withNextIntl(nextConfig)),
   sentryOptions
 );
-
-export default config;
