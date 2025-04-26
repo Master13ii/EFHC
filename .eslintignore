@@ -1,2 +1,25 @@
-# .eslintignore
-vercel.json
+// .eslintrc.js
+module.exports = {
+  extends: [
+    'next/core-web-vitals',
+    // …ваши другие базовые конфигурации…
+  ],
+  plugins: [
+    'jsonc'  // для линтинга JSON-файлов
+  ],
+  rules: {
+    // …ваши общие правила…
+  },
+  overrides: [
+    {
+      files: ['vercel.json'],
+      parser: 'jsonc-eslint-parser',
+      rules: {
+        'jsonc/object-curly-spacing': 'off', // отключаем требование пробелов в { }
+        'jsonc/key-spacing': 'off',          // отключаем требование пробелов перед значением
+        'style/comma-spacing': 'off'         // отключаем требование пробелов после запятой
+      }
+    }
+    // …другие overrides, если есть…
+  ]
+};
