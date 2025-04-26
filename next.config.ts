@@ -1,17 +1,25 @@
+// next.config.ts
 import type { NextConfig } from 'next';
 import withBundleAnalyzer from '@next/bundle-analyzer';
 import { withSentryConfig } from '@sentry/nextjs';
 import createNextIntlPlugin from 'next-intl/plugin';
 
+// Инициализация next-intl
 const withNextIntl = createNextIntlPlugin('./src/libs/i18n.ts');
-const bundleAnalyzer = withBundleAnalyzer({ enabled: process.env.ANALYZE === 'true' });
 
+// Настройка bundle analyzer
+const bundleAnalyzer = withBundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+});
+
+/** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
   output: 'standalone',
   serverExternalPackages: ['@electric-sql/pglite'],
   eslint: { ignoreDuringBuilds: true },
+  // Добавьте при необходимости другие настройки: images, redirects и т.п.
 };
 
 const sentryOptions = {
@@ -27,6 +35,7 @@ const sentryOptions = {
   telemetry: false,
 };
 
+// Собираем плагины: intl → analyzer → sentry
 export default withSentryConfig(
   bundleAnalyzer(withNextIntl(nextConfig)),
   sentryOptions
