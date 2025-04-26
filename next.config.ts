@@ -5,37 +5,37 @@ import { withSentryConfig } from '@sentry/nextjs';
 import createNextIntlPlugin from 'next-intl/plugin';
 import './src/libs/Env';
 
-// Ваш плагин для i18n (не тронуто)
+// Инициализация плагина next-intl
 const withNextIntl = createNextIntlPlugin('./src/libs/i18n.ts');
 
-// Ваш bundle analyzer (не тронуто)
+// Настройка bundle analyzer
 const bundleAnalyzer = withBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 });
 
 /** @type {import('next').NextConfig} */
-const baseConfig: NextConfig = {
-  // Отключаем линтинг во время сборки
+const nextConfig: NextConfig = {
+  // Убираем заголовок X-Powered-By
+  poweredByHeader: false,
+
+  // Включаем строгий режим React
+  reactStrictMode: true,
+
+  // Собираем standalone-вывод
+  output: 'standalone',
+
+  // Внешние серверные пакеты (не трогано)
+  serverExternalPackages: ['@electric-sql/pglite'],
+
+  // Отключаем ESLint-проверку во время сборки
   eslint: {
     ignoreDuringBuilds: true,
   },
 
-  poweredByHeader: false,
-  reactStrictMode: true,
-  output: 'standalone',
-
-  // Ваши три языка, как и было
-  i18n: {
-    locales: ['ru', 'uk', 'en'],
-    defaultLocale: 'ru',
-    localeDetection: true,
-  },
-
-  // Ваши serverExternalPackages, как и было
-  serverExternalPackages: ['@electric-sql/pglite'],
+  // Убираем встроенную секцию i18n — она будет обрабатываться через next-intl
+  // (если вы ранее прописывали здесь locales, удалите их)
 };
 
-// Ваши опции Sentry (не тронуто)
 const sentryOptions = {
   org: 'EFHC',
   project: 'EFHC',
@@ -49,10 +49,10 @@ const sentryOptions = {
   telemetry: false,
 };
 
-// Собираем плагинами в том же порядке, что и было
+// Сборка конфигурации плагинами в порядке: next-intl → bundle-analyzer → sentry
 const config = withSentryConfig(
   bundleAnalyzer(
-    withNextIntl(baseConfig)
+    withNextIntl(nextConfig)
   ),
   sentryOptions
 );
