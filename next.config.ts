@@ -1,4 +1,3 @@
-// next.config.ts
 import type { NextConfig } from 'next';
 import withBundleAnalyzer from '@next/bundle-analyzer';
 import { withSentryConfig } from '@sentry/nextjs';
@@ -12,19 +11,27 @@ const bundleAnalyzer = withBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 });
 
-/** @type {import('next').NextConfig} */
+/** @type {NextConfig} */
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
   output: 'standalone',
   serverExternalPackages: ['@electric-sql/pglite'],
-  eslint: { ignoreDuringBuilds: true },
+  eslint: {
+    ignoreDuringBuilds: process.env.CI === 'true', // Игнорировать ESLint только в CI
+  },
+  // Настройки i18n (для next-intl)
+  i18n: {
+    locales: ['en', 'fr'],
+    defaultLocale: 'en',
+  },
 };
 
+// Настройки Sentry
 const sentryOptions = {
   org: 'EFHC',
   project: 'EFHC',
-  silent: !process.env.CI,
+  silent: process.env.CI !== 'true', // Логировать только вне CI
   widenClientFileUpload: true,
   reactComponentAnnotation: { enabled: true },
   tunnelRoute: '/monitoring',
@@ -34,7 +41,7 @@ const sentryOptions = {
   telemetry: false,
 };
 
-// i18n → bundle-analyzer → Sentry
+// Оборачивание: i18n → bundle-analyzer → Sentry
 export default withSentryConfig(
   bundleAnalyzer(withNextIntl(nextConfig)),
   sentryOptions
