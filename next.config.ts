@@ -1,7 +1,7 @@
-import type { NextConfig } from 'next';
 import withBundleAnalyzer from '@next/bundle-analyzer';
 import { withSentryConfig } from '@sentry/nextjs';
 import createNextIntlPlugin from 'next-intl/plugin';
+import './src/libs/Env';
 
 const withNextIntl = createNextIntlPlugin('./src/libs/i18n.ts');
 
@@ -9,45 +9,28 @@ const bundleAnalyzer = withBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 });
 
-const nextConfig: NextConfig = {
-  poweredByHeader: false,
-  reactStrictMode: true,
-  output: 'standalone',
-  serverExternalPackages: ['@electric-sql/pglite'],
-  eslint: {
-    ignoreDuringBuilds: process.env.CI === 'true',
-  },
-  i18n: {
-    locales: ['en', 'fr', 'ru', 'uk'], // Изменено: добавлены ru и uk
-    defaultLocale: 'en',
-  },
-  images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '*.clerk.dev',
-        port: '',
-        pathname: '/**',
-      },
-    ],
-  },
-  transpilePackages: ['@clerk/nextjs'],
-};
-
-const sentryOptions = {
-  org: 'EFHC',
-  project: 'EFHC',
-  silent: process.env.CI !== 'true',
-  widenClientFileUpload: true,
-  reactComponentAnnotation: { enabled: true },
-  tunnelRoute: '/monitoring',
-  hideSourceMaps: true,
-  disableLogger: true,
-  automaticVercelMonitors: true,
-  telemetry: false,
-};
-
+/** @type {import('next').NextConfig} */
 export default withSentryConfig(
-  bundleAnalyzer(withNextIntl(nextConfig)),
-  sentryOptions
+  bundleAnalyzer(
+    withNextIntl({
+      eslint: {
+        dirs: ['.'],
+      },
+      poweredByHeader: false,
+      reactStrictMode: true,
+      serverExternalPackages: ['@electric-sql/pglite', 'pg'], // Добавлено для Neon
+    }),
+  ),
+  {
+    org: 'efhc', // Изменено для твоего проекта
+    project: 'efhc',
+    silent: !process.env.CI,
+    widenClientFileUpload: true,
+    reactComponentAnnotation: { enabled: true },
+    tunnelRoute: '/monitoring',
+    hideSourceMaps: true,
+    disableLogger: true,
+    automaticVercelMonitors: true,
+    telemetry: false,
+  },
 );
