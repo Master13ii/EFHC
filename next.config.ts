@@ -18,7 +18,7 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: process.env.CI === 'true',
   },
   i18n: {
-    locales: ['en', 'fr'],
+    locales: ['en', 'fr', 'ru', 'uk'], // Изменено: добавлены ru и uk
     defaultLocale: 'en',
   },
   images: {
@@ -30,8 +30,8 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
     ],
-  }, // Добавлено: для поддержки изображений Clerk
-  transpilePackages: ['@clerk/nextjs'], // Добавлено: для совместимости с Clerk
+  },
+  transpilePackages: ['@clerk/nextjs'],
 };
 
 const sentryOptions = {
