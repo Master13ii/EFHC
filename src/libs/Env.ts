@@ -38,6 +38,10 @@ export const env = createEnv({
         message: 'NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY must start with "pk_"',
       })
       .optional(),
+    NEXT_PUBLIC_CLERK_SIGN_IN_URL: z
+      .string()
+      .min(1)
+      .optional(), // Для Clerk
     NEXT_PUBLIC_POSTHOG_KEY: z.string().min(1).optional().default(''),
   },
   runtimeEnv: {
@@ -50,6 +54,7 @@ export const env = createEnv({
     SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
     CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
+    NEXT_PUBLIC_CLERK_SIGN_IN_URL: process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL,
     NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
   },
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
