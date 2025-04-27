@@ -37,7 +37,7 @@ export const env = createEnv({
         message: 'NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY must start with "pk_"',
       })
       .optional(),
-    NEXT_PUBLIC_CLERK_SIGN_IN_URL: z.string().min(1).default('/sign-in'), // Обязателен
+    NEXT_PUBLIC_CLERK_SIGN_IN_URL: z.string().min(1).default('/sign-in'),
     NEXT_PUBLIC_CLERK_SIGN_UP_URL: z.string().min(1).optional(),
     NEXT_PUBLIC_POSTHOG_KEY: z.string().min(1).optional().default(''),
     NEXT_PUBLIC_POSTHOG_HOST: z.string().url().optional().default('https://us.i.posthog.com'),
