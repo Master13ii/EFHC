@@ -24,6 +24,15 @@ export default async function SignUpPage(props: ISignUpPageProps) {
   setRequestLocale(locale);
 
   return (
-    <SignUp path={getI18nPath('/sign-up', locale)} />
+    <div className="flex min-h-screen items-center justify-center bg-gray-100">
+      <SignUp
+        path={getI18nPath('/sign-up', locale)}
+        routing="path"
+        appearance={{
+          baseTheme: "light",
+          variables: { colorPrimary: "#1a73e8" },
+        }}
+      />
+    </div>
   );
-};
+}
