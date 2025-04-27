@@ -15,8 +15,7 @@ export const env = createEnv({
       .min(1)
       .refine((val) => val.startsWith('ajkey_'), {
         message: 'ARCJET_KEY must start with "ajkey_"',
-      })
-      .optional(),
+      }),
     BETTER_STACK_TOKEN: z.string().min(1).optional().default(''),
     CHECKLY_API_KEY: z.string().min(1).optional().default(''),
     CODECOV_TOKEN: z.string().min(1).optional().default(''),
@@ -38,7 +37,7 @@ export const env = createEnv({
         message: 'NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY must start with "pk_"',
       })
       .optional(),
-    NEXT_PUBLIC_CLERK_SIGN_IN_URL: z.string().min(1), // Обязателен для Clerk
+    NEXT_PUBLIC_CLERK_SIGN_IN_URL: z.string().min(1).default('/sign-in'), // Обязателен
     NEXT_PUBLIC_CLERK_SIGN_UP_URL: z.string().min(1).optional(),
     NEXT_PUBLIC_POSTHOG_KEY: z.string().min(1).optional().default(''),
     NEXT_PUBLIC_POSTHOG_HOST: z.string().url().optional().default('https://us.i.posthog.com'),
@@ -60,3 +59,11 @@ export const env = createEnv({
   },
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
 });
+
+// Явная проверка критических переменных
+if (!process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL) {
+  throw new Error('Environment variable NEXT_PUBLIC_CLERK_SIGN_IN_URL is required but not defined.');
+}
+if (!process.env.ARCJET_KEY || !process.env.ARCJET_KEY.startsWith('ajkey_')) {
+  throw new Error('Environment variable ARCJET_KEY is required and must start with "ajkey_".');
+}
