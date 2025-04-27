@@ -38,8 +38,8 @@ export const env = createEnv({
         message: 'NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY must start with "pk_"',
       })
       .optional(),
-    NEXT_PUBLIC_CLERK_SIGN_IN_URL: z.string().min(1), // Обязателен для Clerk
-    NEXT_PUBLIC_CLERK_SIGN_UP_URL: z.string().min(1).optional(), // Для регистрации
+    NEXT_PUBLIC_CLERK_SIGN_IN_URL: z.string().min(1), // Обязателен
+    NEXT_PUBLIC_CLERK_SIGN_UP_URL: z.string().min(1).optional(),
     NEXT_PUBLIC_POSTHOG_KEY: z.string().min(1).optional().default(''),
   },
   runtimeEnv: {
