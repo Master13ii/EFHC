@@ -9,18 +9,36 @@ export const env = createEnv({
       .refine((val) => val.startsWith('postgresql://'), {
         message: 'DATABASE_URL must be a valid PostgreSQL connection string',
       })
-      .optional(), // Временно опционально
-    ARCJET_KEY: z.string().min(1).optional(),
-    BETTER_STACK_TOKEN: z.string().min(1).optional(),
-    CHECKLY_API_KEY: z.string().min(1).optional(),
-    CODECOV_TOKEN: z.string().min(1).optional(),
-    POSTHOG_KEY: z.string().min(1).optional(),
-    SENTRY_AUTH_TOKEN: z.string().min(1).optional(),
-    CLERK_SECRET_KEY: z.string().min(1).optional(),
+      .optional(),
+    ARCJET_KEY: z
+      .string()
+      .min(1)
+      .refine((val) => val.startsWith('ajkey_'), {
+        message: 'ARCJET_KEY must start with "ajkey_"',
+      })
+      .optional(),
+    BETTER_STACK_TOKEN: z.string().min(1).optional().default(''),
+    CHECKLY_API_KEY: z.string().min(1).optional().default(''),
+    CODECOV_TOKEN: z.string().min(1).optional().default(''),
+    POSTHOG_KEY: z.string().min(1).optional().default(''),
+    SENTRY_AUTH_TOKEN: z.string().min(1).optional().default(''),
+    CLERK_SECRET_KEY: z
+      .string()
+      .min(1)
+      .refine((val) => val.startsWith('sk_'), {
+        message: 'CLERK_SECRET_KEY must start with "sk_"',
+      })
+      .optional(),
   },
   client: {
-    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string().min(1).optional(),
-    NEXT_PUBLIC_POSTHOG_KEY: z.string().min(1).optional(),
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z
+      .string()
+      .min(1)
+      .refine((val) => val.startsWith('pk_'), {
+        message: 'NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY must start with "pk_"',
+      })
+      .optional(),
+    NEXT_PUBLIC_POSTHOG_KEY: z.string().min(1).optional().default(''),
   },
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
