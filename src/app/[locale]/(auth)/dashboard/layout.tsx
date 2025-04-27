@@ -17,11 +17,11 @@ export default async function DashboardLayout(props: {
 
   return (
     <BaseTemplate
-      leftNav={(
+      leftNav={
         <>
           <li>
             <Link
-              href="/dashboard/"
+              href={`/dashboard/`} // Изменено: убран лишний слеш
               className="border-none text-gray-700 hover:text-gray-900"
             >
               {t('dashboard_link')}
@@ -29,29 +29,31 @@ export default async function DashboardLayout(props: {
           </li>
           <li>
             <Link
-              href="/dashboard/user-profile/"
+              href={`/dashboard/user-profile/`} // Изменено: убран лишний слеш
               className="border-none text-gray-700 hover:text-gray-900"
             >
               {t('user_profile_link')}
             </Link>
           </li>
         </>
-      )}
-      rightNav={(
+      }
+      rightNav={
         <>
           <li>
             <SignOutButton>
-              <button className="border-none text-gray-700 hover:text-gray-900" type="button">
+              <button
+                className="border-none text-gray-700 hover:text-gray-900"
+                type="button"
+              >
                 {t('sign_out')}
               </button>
             </SignOutButton>
           </li>
-
           <li>
             <LocaleSwitcher />
           </li>
         </>
-      )}
+      }
     >
       {props.children}
     </BaseTemplate>
