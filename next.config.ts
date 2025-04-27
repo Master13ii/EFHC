@@ -21,6 +21,17 @@ const nextConfig: NextConfig = {
     locales: ['en', 'fr'],
     defaultLocale: 'en',
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '*.clerk.dev',
+        port: '',
+        pathname: '/**',
+      },
+    ],
+  }, // Добавлено: для поддержки изображений Clerk
+  transpilePackages: ['@clerk/nextjs'], // Добавлено: для совместимости с Clerk
 };
 
 const sentryOptions = {
