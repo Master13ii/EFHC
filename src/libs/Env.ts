@@ -59,7 +59,6 @@ export const env = createEnv({
   },
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
 });
-
 // Явная проверка
 if (!process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL) {
   throw new Error('Environment variable NEXT_PUBLIC_CLERK_SIGN_IN_URL is required but not defined.');
