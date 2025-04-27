@@ -38,9 +38,10 @@ export const env = createEnv({
         message: 'NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY must start with "pk_"',
       })
       .optional(),
-    NEXT_PUBLIC_CLERK_SIGN_IN_URL: z.string().min(1), // Обязателен
+    NEXT_PUBLIC_CLERK_SIGN_IN_URL: z.string().min(1), // Обязателен для Clerk
     NEXT_PUBLIC_CLERK_SIGN_UP_URL: z.string().min(1).optional(),
     NEXT_PUBLIC_POSTHOG_KEY: z.string().min(1).optional().default(''),
+    NEXT_PUBLIC_POSTHOG_HOST: z.string().url().optional().default('https://us.i.posthog.com'),
   },
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
@@ -50,11 +51,12 @@ export const env = createEnv({
     CODECOV_TOKEN: process.env.CODECOV_TOKEN,
     POSTHOG_KEY: process.env.POSTHOG_KEY,
     SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
-    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
     CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
     NEXT_PUBLIC_CLERK_SIGN_IN_URL: process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL,
     NEXT_PUBLIC_CLERK_SIGN_UP_URL: process.env.NEXT_PUBLIC_CLERK_SIGN_UP_URL,
     NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
+    NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
   },
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
 });
